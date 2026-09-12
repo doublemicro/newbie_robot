@@ -10,12 +10,12 @@
   --line:#D2D8CD; --line2:#E4E8DF;
   --seal:#A6332E; --teal:#1E5B57; --gold:#856318; --gold-bg:#F7F1E0;
   --cash:#1E5B57; --tax:#2E5C86; --loan:#8A4A17; --cond:#6B5B8A;
-  --focus:#2E6FB7; --shadow:0 10px 30px rgba(24,36,42,.055);
+  --focus:#2E6FB7;
   --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.7;-webkit-font-smoothing:antialiased;word-break:keep-all}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
 .num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 
 header{border-bottom:1px solid var(--line);background:var(--card)}
@@ -35,7 +35,7 @@ h1 .yr{font-weight:400;color:var(--ink3)}
 main{max-width:1180px;margin:0 auto;padding:26px 24px 80px;display:grid;gap:26px}
 @media (min-width:1000px){main{grid-template-columns:365px minmax(0,1fr);align-items:start}.panel{position:sticky;top:22px;max-height:calc(100vh - 44px);overflow:auto}}
 
-.panel{background:var(--card);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:3px}
 .panel h2{margin:0;padding:15px 20px;font-size:14px;font-weight:680;border-bottom:1px solid var(--line2);position:sticky;top:0;background:var(--card);z-index:1}
 .panel h2 span{float:right;font-weight:450;color:var(--ink3)}
 form{padding:6px 20px 20px}
@@ -44,11 +44,9 @@ form{padding:6px 20px 20px}
 .f{padding:11px 0;border-bottom:1px dotted var(--line2)}
 .f:last-of-type{border-bottom:0}
 label,.lbl{display:block;font-size:13.5px;color:var(--ink2);margin-bottom:6px;font-weight:550}
-input[type=text],input[type=date],input[type=number],select{width:100%;min-height:44px;padding:9px 10px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:5px;background:#FCFDFB;color:var(--ink)}
-input:user-invalid{border-color:var(--seal);background:#FFF9F8}
+input[type=date],input[type=number],select{width:100%;padding:9px 10px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:2px;background:#FCFDFB;color:var(--ink)}
 input:focus,select:focus,button:focus-visible,.seg input:focus-visible+span,.chk input:focus-visible+span{outline:2px solid var(--focus);outline-offset:1px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.row2.single{grid-template-columns:1fr}
 .seg,.chk{display:flex;flex-wrap:wrap;gap:5px}
 .seg label,.chk label{margin:0}
 .seg input,.chk input{position:absolute;opacity:0;width:0;height:0}
@@ -56,9 +54,9 @@ input:focus,select:focus,button:focus-visible,.seg input:focus-visible+span,.chk
 .seg input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
 .chk input:checked+span{background:var(--gold-bg);border-color:#E0D4AE;color:var(--gold);font-weight:600}
 .hint{font-size:13px;color:var(--ink3);margin-top:5px}
-.submit{width:100%;margin-top:18px;padding:13px;font:inherit;font-size:16px;font-weight:650;background:var(--ink);color:#fff;border:0;border-radius:5px;cursor:pointer;transition:background .15s,transform .15s}
+.submit{width:100%;margin-top:18px;padding:13px;font:inherit;font-size:16px;font-weight:650;background:var(--ink);color:#fff;border:0;border-radius:2px;cursor:pointer}
 .submit:disabled{background:var(--ink3);cursor:progress}
-.submit:hover:not(:disabled){background:#0F1A1F;transform:translateY(-1px)}
+.submit:hover:not(:disabled){background:#0F1A1F}
 
 .empty{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:42px 30px;color:var(--ink2)}
 .empty h3{margin:0 0 8px;font-size:19px;font-weight:680;color:var(--ink)}
@@ -69,9 +67,9 @@ input:focus,select:focus,button:focus-visible,.seg input:focus-visible+span,.chk
 .lookup b{font-weight:650;color:var(--ink)}
 .tag{display:inline-block;padding:1px 7px;border-radius:2px;font-size:11.5px;font-weight:600;background:#E7F0EE;color:var(--teal)}
 
-.results{width:100%;max-width:760px;margin:0 auto}
+.results{max-width:640px;margin:0 auto}
 .branches{display:grid;gap:18px}
-.branch{background:var(--card);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow)}
+.branch{background:var(--card);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 .branch.real{border-top:3px solid var(--seal)}
 .branch.count{border-top:3px solid var(--teal)}
 .bh{padding:20px 22px 18px;border-bottom:1px solid var(--line2)}
@@ -115,7 +113,7 @@ ul.items li{padding:14px 22px;border-bottom:1px solid var(--line2)}
 .nat.loan{background:#F6EEE6;color:var(--loan)}
 .nat.cond{background:#EEEAF5;color:var(--cond)}
 
-details.more{background:var(--card);border:1px solid var(--line);border-radius:8px;margin-top:18px;overflow:hidden}
+details.more{background:var(--card);border:1px solid var(--line);border-radius:3px;margin-top:18px}
 details.more>summary{padding:14px 18px;cursor:pointer;font-size:15px;font-weight:620;list-style:none;display:flex;justify-content:space-between;align-items:center}
 details.more>summary::-webkit-details-marker{display:none}
 details.more>summary::after{content:"펼치기";font-weight:450;color:var(--ink3);font-size:12px}
@@ -136,15 +134,6 @@ footer{border-top:1px solid var(--line);background:var(--card)}
 .fwrap{max-width:1180px;margin:0 auto;padding:22px 24px 40px;font-size:12.5px;color:var(--ink3)}
 .fwrap h3{margin:0 0 6px;font-size:13px;color:var(--ink2);font-weight:650}
 .fwrap ul{margin:0 0 14px;padding-left:17px}
-@media (max-width:640px){
-  body{font-size:16px}.hwrap{padding:20px 18px 18px}h1{font-size:25px}h1 .yr{display:block;margin-top:3px;font-size:15px}
-  main{padding:18px 14px 56px;gap:18px}form{padding-inline:16px}.panel h2{padding-inline:16px}
-  .row2{grid-template-columns:1fr}.seg span,.chk span{padding:7px 11px}.empty{padding:28px 20px}
-  .bh{padding:18px 16px 16px}.yrs{grid-template-columns:1fr}.yrs .yv{font-size:33px}
-  .dom{padding:12px 16px}.dom .dn,.dom .dv{font-size:18px}ul.items li{padding:14px 16px}
-  .it-top{display:block}.it-val{display:block;margin-top:5px}.more-body{overflow-x:auto;padding-inline:14px}table.grid{min-width:650px}
-  .fwrap{padding:20px 18px 32px}
-}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -225,8 +214,8 @@ footer{border-top:1px solid var(--line);background:var(--card)}
       </div>
       <div class="f" id="fHouse">
         <div class="row2">
-          <div id="depField"><label for="deposit" id="depLbl">보증금 (만원)</label><input type="number" id="deposit" value="3000" min="0" step="100"></div>
-          <div id="rentField"><label for="rent" id="rentLbl">월세 (만원)</label><input type="number" id="rent" value="55" min="0" step="1"></div>
+          <div><label for="deposit" id="depLbl">보증금 (만원)</label><input type="number" id="deposit" value="3000" min="0" step="100"></div>
+          <div><label for="rent" id="rentLbl">월세 (만원)</label><input type="number" id="rent" value="55" min="0" step="1"></div>
         </div>
         <div class="hint" id="houseHint"></div>
       </div>
@@ -298,7 +287,7 @@ footer{border-top:1px solid var(--line);background:var(--card)}
     </form>
   </section>
 
-  <section id="out" aria-live="polite">
+  <section id="out">
     <div class="results">
     <div class="empty">
       <h3>조건을 넣고 조회하면 결과가 여기 나옵니다</h3>
@@ -1080,13 +1069,6 @@ function ageFromYYYYMMDD(str) {
   if (m < 0 || (m === 0 && t.getDate() < b.getDate())) a--;
   return { age: Math.max(0, a), year, month: mm, day: dd };
 }
-function isValidBirth(str) {
-  if (!/^\d{8}$/.test(str)) return false;
-  const y = +str.slice(0, 4), m = +str.slice(4, 6), d = +str.slice(6, 8);
-  const date = new Date(y, m - 1, d);
-  const today = new Date(2026, 8, 12);
-  return y >= 1900 && date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d && date <= today;
-}
 function currentBirth() {
   return ageFromYYYYMMDD($("#birth8").value);
 }
@@ -1251,20 +1233,16 @@ function syncHouse() {
   const t = +document.querySelector('input[name="tenure"]:checked').value;
   const box = $("#fHouse"), dep = $("#depLbl"), rent = $("#rentLbl"), hint = $("#houseHint");
   box.style.display = t === 2 ? "none" : "";
-  $("#rentField").style.display = t === 0 ? "" : "none";
-  $("#fHouse .row2").classList.toggle("single", t !== 0);
-  if (t === 3) { dep.textContent = "예상 주택가격 (만원)"; hint.textContent = "예상 주택가격을 기준으로 구입자금 대출 한도를 계산합니다."; }
-  else if (t === 1) { dep.textContent = "전세보증금 (만원)"; hint.textContent = "전세보증금을 기준으로 대출 가능 금액을 계산합니다."; }
+  if (t === 3) { dep.textContent = "예상 주택가격 (만원)"; rent.textContent = "자기자금 (만원)"; hint.textContent = "주택가격 기준으로 대출 한도를 계산합니다."; }
+  else if (t === 1) { dep.textContent = "전세보증금 (만원)"; rent.textContent = "월세 (만원)"; hint.textContent = "전세는 월세를 0으로 두세요."; }
   else { dep.textContent = "보증금 (만원)"; rent.textContent = "월세 (만원)"; hint.textContent = "보증부월세면 둘 다 넣으세요."; }
 }
 const syncAge = () => {
   const r = currentBirth();
-  const field = $("#birth8"), value = field.value.trim();
-  const valid = isValidBirth(value);
-  field.setCustomValidity(valid ? "" : "실제 생년월일을 8자리로 입력해 주세요.");
+  const valid = /^\d{8}$/.test($("#birth8").value.trim());
   $("#ageHint").textContent = valid
     ? `${r.year}년 ${r.month}월 ${r.day}일생 · 만 ${r.age}세 기준으로 판정합니다.`
-    : "실제 생년월일을 8자리로 입력하세요 (예: 19970514).";
+    : "8자리 숫자로 입력하세요 (예: 19970514).";
 };
 $("#birth8").addEventListener("input", () => {
   const el = $("#birth8");
