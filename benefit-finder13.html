@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>혜택 조합기 — 주거·교통·일자리</title>
+<style>
+:root{
+  --paper:#ECEEE8; --card:#FFFFFF; --ink:#18242A; --ink2:#53656B; --ink3:#8A999E;
+  --line:#D2D8CD; --line2:#E4E8DF;
+  --seal:#A6332E; --teal:#1E5B57; --gold:#856318; --gold-bg:#F7F1E0;
+  --cash:#1E5B57; --tax:#2E5C86; --loan:#8A4A17; --cond:#6B5B8A;
+  --focus:#2E6FB7;
+  --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+header{border-bottom:1px solid var(--line);background:var(--card)}
+.hwrap{max-width:1180px;margin:0 auto;padding:26px 24px 22px}
+h1{margin:0;font-size:29px;font-weight:760;letter-spacing:-.035em;line-height:1.25}
+h1 .yr{font-weight:400;color:var(--ink3)}
+.lede{margin:9px 0 0;max-width:66ch;color:var(--ink2);font-size:16px}
+.meter{margin-top:20px;display:flex;flex-wrap:wrap;align-items:baseline;gap:0 26px;border-top:1px solid var(--line2);padding-top:14px}
+.meter dl{margin:0;display:flex;align-items:baseline;gap:8px}
+.meter dt{font-size:12.5px;color:var(--ink3);margin:0}
+.meter dd{margin:0;font-size:18px;font-weight:680}
+.meter dd small{font-size:12px;font-weight:500;color:var(--ink3);margin-left:2px}
+.bar{flex:1 1 150px;min-width:120px;height:5px;border-radius:3px;background:var(--line2);overflow:hidden;align-self:center}
+.bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .12s linear}
+.ready .bar i{background:var(--ink)}
+
+main{max-width:1180px;margin:0 auto;padding:26px 24px 80px;display:grid;gap:26px}
+@media (min-width:1000px){main{grid-template-columns:365px minmax(0,1fr);align-items:start}.panel{position:sticky;top:22px;max-height:calc(100vh - 44px);overflow:auto}}
+
+.panel{background:var(--card);border:1px solid var(--line);border-radius:3px}
+.panel h2{margin:0;padding:15px 20px;font-size:14px;font-weight:680;border-bottom:1px solid var(--line2);position:sticky;top:0;background:var(--card);z-index:1}
+.panel h2 span{float:right;font-weight:450;color:var(--ink3)}
+form{padding:6px 20px 20px}
+.sect{margin:14px 0 2px;font-size:11.5px;font-weight:700;color:var(--ink3);border-top:1px solid var(--line2);padding-top:12px}
+.sect:first-child{border-top:0;margin-top:4px}
+.f{padding:11px 0;border-bottom:1px dotted var(--line2)}
+.f:last-of-type{border-bottom:0}
+label,.lbl{display:block;font-size:13.5px;color:var(--ink2);margin-bottom:6px;font-weight:550}
+input[type=date],input[type=number],select{width:100%;padding:9px 10px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:2px;background:#FCFDFB;color:var(--ink)}
+input:focus,select:focus,button:focus-visible,.seg input:focus-visible+span,.chk input:focus-visible+span{outline:2px solid var(--focus);outline-offset:1px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg,.chk{display:flex;flex-wrap:wrap;gap:5px}
+.seg label,.chk label{margin:0}
+.seg input,.chk input{position:absolute;opacity:0;width:0;height:0}
+.seg span,.chk span{display:inline-block;padding:6px 12px;font-size:14px;border:1px solid var(--line);border-radius:999px;cursor:pointer;background:#FCFDFB;color:var(--ink2);user-select:none}
+.seg input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
+.chk input:checked+span{background:var(--gold-bg);border-color:#E0D4AE;color:var(--gold);font-weight:600}
+.hint{font-size:13px;color:var(--ink3);margin-top:5px}
+.submit{width:100%;margin-top:18px;padding:13px;font:inherit;font-size:16px;font-weight:650;background:var(--ink);color:#fff;border:0;border-radius:2px;cursor:pointer}
+.submit:disabled{background:var(--ink3);cursor:progress}
+.submit:hover:not(:disabled){background:#0F1A1F}
+
+.empty{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:42px 30px;color:var(--ink2)}
+.empty h3{margin:0 0 8px;font-size:19px;font-weight:680;color:var(--ink)}
+.empty p{margin:0 0 14px;max-width:58ch;font-size:15.5px}
+.empty ul{margin:0;padding-left:18px;font-size:15px;color:var(--ink3)}
+
+.lookup{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;font-size:12.5px;color:var(--ink2);background:var(--card);border:1px solid var(--line);border-radius:3px;padding:10px 14px;margin-bottom:18px}
+.lookup b{font-weight:650;color:var(--ink)}
+.tag{display:inline-block;padding:1px 7px;border-radius:2px;font-size:11.5px;font-weight:600;background:#E7F0EE;color:var(--teal)}
+
+.results{max-width:640px;margin:0 auto}
+.branches{display:grid;gap:18px}
+.branch{background:var(--card);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.branch.real{border-top:3px solid var(--seal)}
+.branch.count{border-top:3px solid var(--teal)}
+.bh{padding:20px 22px 18px;border-bottom:1px solid var(--line2)}
+.bh .kind{font-size:14px;font-weight:650}
+.real .kind{color:var(--seal)}
+.count .kind{color:var(--teal)}
+.yrs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.yrs .box{border:1px solid var(--line2);border-radius:3px;padding:12px 14px}
+.yrs .box.now{background:#F7F9F5}
+.yrs .yl{font-size:13.5px;color:var(--ink3)}
+.yrs .yv{font-size:38px;font-weight:760;letter-spacing:-.04em;line-height:1.2;margin-top:2px}
+.yrs .yv small{font-size:15px;font-weight:500;color:var(--ink3);margin-left:3px;letter-spacing:0}
+.ideal{margin-top:12px;font-size:15.5px;color:var(--ink2);border-top:1px dotted var(--line2);padding-top:10px}
+.ideal b{font-weight:700;font-size:16.5px}
+.buckets{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:8px}
+.bk{font-size:14px;padding:4px 10px;border-radius:2px;border:1px solid var(--line);background:#FAFBF8;font-weight:600}
+.bk.cash{border-color:#BEDAD5;color:var(--cash)}
+.bk.tax{border-color:#C3D5E6;color:var(--tax)}
+.bk.loan{border-color:#E3CDB6;color:var(--loan)}
+.bk.cond{border-color:#D5CDE4;color:var(--cond)}
+.same{margin-top:9px;font-size:13.5px;color:var(--ink3);border-top:1px dotted var(--line2);padding-top:8px}
+
+.dom{padding:13px 22px;background:#F7F9F5;border-bottom:1px solid var(--line2);display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.dom .dn{font-size:21px;font-weight:730;letter-spacing:-.02em}
+.dom .dv{font-size:22px;font-weight:760;letter-spacing:-.02em;color:var(--ink)}
+.dom.none .dn{color:var(--ink3);font-weight:600}
+ul.items{list-style:none;margin:0;padding:0}
+ul.items li{padding:14px 22px;border-bottom:1px solid var(--line2)}
+.it-top{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.it-name{font-size:16.5px;font-weight:650;letter-spacing:-.015em}
+.it-val{font-size:19px;font-weight:720;white-space:nowrap}
+.it-val s{font-weight:500;font-size:15px;color:var(--ink3);margin-right:6px;text-decoration-thickness:1px}
+.it-meta{font-size:13.5px;color:var(--ink3);margin-top:2px}
+.it-why{font-size:14px;color:var(--ink2);margin-top:5px}
+.chip{display:inline-block;font-size:12.5px;padding:2px 7px;border-radius:2px;margin:3px 5px 0 0;border:1px solid var(--line);color:var(--ink2);background:#FAFBF8}
+.chip.warn{border-color:#E0D4AE;background:var(--gold-bg);color:var(--gold)}
+.chip.zero{border-color:#E4C9C7;background:#F7EBEA;color:var(--seal)}
+.nat{display:inline-block;font-size:12px;font-weight:700;padding:2px 7px;border-radius:2px;margin-right:6px;vertical-align:1px}
+.nat.cash{background:#E7F0EE;color:var(--cash)}
+.nat.tax{background:#E8EFF6;color:var(--tax)}
+.nat.loan{background:#F6EEE6;color:var(--loan)}
+.nat.cond{background:#EEEAF5;color:var(--cond)}
+
+details.more{background:var(--card);border:1px solid var(--line);border-radius:3px;margin-top:18px}
+details.more>summary{padding:14px 18px;cursor:pointer;font-size:15px;font-weight:620;list-style:none;display:flex;justify-content:space-between;align-items:center}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::after{content:"펼치기";font-weight:450;color:var(--ink3);font-size:12px}
+details.more[open]>summary::after{content:"접기"}
+details.more>summary:hover{background:#FAFBF8}
+.more-body{padding:4px 18px 16px;border-top:1px solid var(--line2)}
+table.grid{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:10px}
+table.grid th,table.grid td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line2);vertical-align:top}
+table.grid th{font-size:13px;color:var(--ink3);font-weight:600}
+table.grid td.r{text-align:right;white-space:nowrap}
+.drop{color:var(--ink3)}
+.gap{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:3px;padding:15px 18px}
+.gap h3{margin:0 0 4px;font-size:16.5px;font-weight:650;line-height:1.5}
+.gap p{margin:0 0 6px;font-size:14.5px;color:var(--ink2)}
+.gap ul{margin:6px 0 0;padding-left:17px;font-size:14.5px;color:var(--ink2)}
+.gap li{margin-bottom:3px}
+footer{border-top:1px solid var(--line);background:var(--card)}
+.fwrap{max-width:1180px;margin:0 auto;padding:22px 24px 40px;font-size:12.5px;color:var(--ink3)}
+.fwrap h3{margin:0 0 6px;font-size:13px;color:var(--ink2);font-weight:650}
+.fwrap ul{margin:0 0 14px;padding-left:17px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <h1>혜택 조합기 <span class="yr">2026 · 주거 · 교통 · 일자리</span></h1>
+    <p class="lede">조건에 맞는 제도를 찾은 다음, 실제로 손에 남는 금액이 가장 큰 조합을 고릅니다. 큰 숫자는 통장에 들어오거나 세금이 줄어드는 <b>실현 금액</b>이고, 제도별 안내문을 그대로 더한 <b>표기상 합산</b>은 아래에 따로 보여줍니다.</p>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>내 조건 <span id="pCount"></span></h2>
+    <form id="form">
+      <div class="sect">기본</div>
+      <div class="f">
+        <label for="birth8">생년월일 (8자리, 예: 19970514)</label>
+        <input type="text" id="birth8" value="19970514" maxlength="8" inputmode="numeric" pattern="[0-9]{8}" placeholder="19970514">
+        <div class="hint" id="ageHint"></div>
+      </div>
+      <div class="f">
+        <span class="lbl">혼인 상태</span>
+        <div class="seg">
+          <label><input type="radio" name="marital" value="0" checked><span>미혼</span></label>
+          <label><input type="radio" name="marital" value="1"><span>신혼·예비 (7년 이내)</span></label>
+          <label><input type="radio" name="marital" value="2"><span>기혼</span></label>
+        </div>
+      </div>
+      <div class="f">
+        <span class="lbl">자녀</span>
+        <div class="seg">
+          <label><input type="radio" name="children" value="0" checked><span>없음</span></label>
+          <label><input type="radio" name="children" value="1"><span>2년 내 출산·입양</span></label>
+          <label><input type="radio" name="children" value="2"><span>1명</span></label>
+          <label><input type="radio" name="children" value="3"><span>2명 이상</span></label>
+        </div>
+      </div>
+      <div class="f">
+        <div class="row2">
+          <div><label for="hh">가구원 수</label>
+            <select id="hh"><option value="1" selected>1인</option><option value="2">2인</option><option value="3">3인</option><option value="4">4인</option><option value="5">5인 이상</option></select></div>
+          <div><label for="region">거주 지역</label>
+            <select id="region"><option value="0" selected>서울</option><option value="1">경기·인천</option><option value="2">광역시·세종</option><option value="3">그 외 지역</option></select></div>
+        </div>
+      </div>
+      <div class="f">
+        <div class="row2">
+          <div><label for="income">연소득 (만원)</label><input type="number" id="income" value="3200" min="0" step="100"></div>
+          <div><label for="assets">순자산 (만원)</label><input type="number" id="assets" value="4000" min="0" step="100"></div>
+        </div>
+        <div class="hint">자격 판정은 부부 합산 기준입니다. 세금 계산은 본인 몫만 씁니다.</div>
+      </div>
+      <div class="f">
+        <label for="saving">월 저축 여력 (만원)</label>
+        <input type="number" id="saving" value="30" min="0" step="5">
+        <div class="hint">청약통장·도약계좌처럼 내 돈을 넣어야 하는 제도의 실효성을 여기서 판단합니다.</div>
+      </div>
+      <div class="f">
+        <span class="lbl">기초생활수급·차상위</span>
+        <div class="seg">
+          <label><input type="radio" name="welfare" value="0" checked><span>해당 없음</span></label>
+          <label><input type="radio" name="welfare" value="1"><span>차상위</span></label>
+          <label><input type="radio" name="welfare" value="2"><span>수급자</span></label>
+        </div>
+      </div>
+
+      <div class="sect">주거</div>
+      <div class="f">
+        <span class="lbl">현재 또는 예정 주거 형태</span>
+        <div class="seg">
+          <label><input type="radio" name="tenure" value="0" checked><span>월세·보증부월세</span></label>
+          <label><input type="radio" name="tenure" value="1"><span>전세</span></label>
+          <label><input type="radio" name="tenure" value="2"><span>자가</span></label>
+          <label><input type="radio" name="tenure" value="3"><span>구입 예정</span></label>
+        </div>
+      </div>
+      <div class="f" id="fHouse">
+        <div class="row2">
+          <div><label for="deposit" id="depLbl">보증금 (만원)</label><input type="number" id="deposit" value="3000" min="0" step="100"></div>
+          <div><label for="rent" id="rentLbl">월세 (만원)</label><input type="number" id="rent" value="55" min="0" step="1"></div>
+        </div>
+        <div class="hint" id="houseHint"></div>
+      </div>
+      <div class="f">
+        <span class="lbl">주택 소유</span>
+        <div class="seg">
+          <label><input type="radio" name="homeless" value="1" checked><span>무주택</span></label>
+          <label><input type="radio" name="homeless" value="0"><span>주택 보유</span></label>
+        </div>
+      </div>
+      <div class="f">
+        <span class="lbl">청약통장</span>
+        <div class="seg">
+          <label><input type="radio" name="account" value="0"><span>없음</span></label>
+          <label><input type="radio" name="account" value="1" checked><span>일반</span></label>
+          <label><input type="radio" name="account" value="2"><span>청년주택드림</span></label>
+        </div>
+      </div>
+
+      <div class="sect">대출</div>
+      <div class="f">
+        <span class="lbl">전세·구입자금 대출 포함 여부</span>
+        <div class="seg">
+          <label><input type="radio" name="loanon" value="1" checked><span>포함</span></label>
+          <label><input type="radio" name="loanon" value="0"><span>제외</span></label>
+        </div>
+        <div class="hint">제외하면 이자 절감 항목이 후보에서 전부 빠지고, 빚 없이 받을 수 있는 혜택만 계산합니다.</div>
+      </div>
+      <div class="f" id="fLoanAmt">
+        <label for="loanAmount">희망 대출금액 (만원)</label>
+        <input type="number" id="loanAmount" value="" min="0" step="100" placeholder="비워두면 한도까지 전부">
+        <div class="hint" id="loanAmtHint">상품별 한도와 보증금 조건 안에서 이 금액까지만 빌린다고 계산합니다. 비워두면 각 상품의 최대 한도를 씁니다.</div>
+      </div>
+
+      <div class="sect">교통</div>
+      <div class="f">
+        <div class="row2">
+          <div><label for="transit">월 교통비 (만원)</label><input type="number" id="transit" value="7" min="0" step="1"></div>
+          <div><label for="rides">월 이용 횟수</label><input type="number" id="rides" value="40" min="0" step="1"></div>
+        </div>
+        <div class="hint">월 15회 미만이면 환급 대상이 아닙니다.</div>
+      </div>
+
+      <div class="sect">일자리</div>
+      <div class="f">
+        <span class="lbl">고용 상태</span>
+        <div class="seg">
+          <label><input type="radio" name="employment" value="0" checked><span>재직 중</span></label>
+          <label><input type="radio" name="employment" value="1"><span>구직 중·미취업</span></label>
+          <label><input type="radio" name="employment" value="2"><span>학생·기타</span></label>
+        </div>
+      </div>
+      <div class="f">
+        <span class="lbl">중소·중견기업 재직 또는 청년창업 지원</span>
+        <div class="seg">
+          <label><input type="radio" name="sme" value="1"><span>해당</span></label>
+          <label><input type="radio" name="sme" value="0" checked><span>해당 없음</span></label>
+        </div>
+        <div class="hint">근무지는 거주 지역과 같다고 보고 수도권·비수도권을 판정합니다.</div>
+      </div>
+
+      <div class="sect">이미 받은 적 있는 혜택</div>
+      <div class="f">
+        <div class="chk" id="usedBox"></div>
+        <div class="hint">평생 1회성 제도라 이미 소진했다면 체크하세요. 처음부터 계산에서 뺍니다.</div>
+      </div>
+
+      <button class="submit" id="go" type="submit" disabled>사전 계산 중…</button>
+    </form>
+  </section>
+
+  <section id="out">
+    <div class="results">
+    <div class="empty">
+      <h3>조건을 넣고 조회하면 결과가 여기 나옵니다</h3>
+      <p>같은 금액이라도 성격이 다릅니다. 통장에 꽂히는 현금, 낼 세금이 있어야 의미가 있는 절세, 빚을 져야 생기는 이자 절감, 훈련을 듣거나 추첨에 붙어야 발생하는 조건부 혜택을 나눠 계산합니다.</p>
+      <ul>
+        <li>큰 숫자는 실현 금액(현금 + 절세)이고, 1년차와 2년차를 따로 보여줍니다</li>
+        <li>월세 지원을 받으면 그만큼 월세 세액공제 대상이 줄어드는 감액 관계를 반영합니다</li>
+        <li>절세는 소득 구간별 추정 결정세액을 넘지 못하게 막습니다</li>
+      </ul>
+    </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="fwrap">
+    <h3>계산 방식</h3>
+    <ul>
+      <li><b>실현 금액 = 실수령 현금 + 절세.</b> 대출 이자 절감과 조건부 혜택은 여기에 넣지 않고 따로 표시합니다. 빚을 져야 생기거나, 추첨·수강 같은 관문이 남아 있어서입니다.</li>
+      <li><b>절세 상한.</b> 소득 구간별 추정 결정세액(총급여 2,500만원 약 20만원 / 3,000만원 45만원 / 3,500만원 80만원 / 4,000만원 120만원)을 넘지 못합니다. 중소기업 소득세 감면을 먼저 적용하고 남은 세액에서 월세 세액공제, 청약저축 소득공제 순으로 뺍니다. 재직 중이 아니면 낼 세금이 없다고 보고 0원 처리합니다.</li>
+      <li><b>감액 관계.</b> 청년월세지원·주거급여로 받은 금액은 내가 부담한 월세가 아니므로 월세 세액공제 대상에서 뺍니다.</li>
+      <li><b>저축 여력.</b> 청약통장·도약계좌·내일저축계좌는 매달 내 돈을 넣어야 하므로, 여력이 모자라면 넣을 수 있는 만큼 비례해서 줄입니다.</li>
+      <li><b>대출 선택.</b> 대출을 제외하면 전세·구입자금 대출은 후보에서 빠지고 이자 절감 항목이 전부 사라집니다. 포함하되 희망 금액을 입력하면 각 상품의 한도 안에서 그 금액까지만 빌린다고 보고 원금에 비례해 이자 절감액도 줄어듭니다. 비워두면 상품별 최대 한도를 씁니다.</li>
+      <li><b>연차 구분.</b> 지급 기간이 정해진 제도는 해당 연차까지만 더합니다. 1년차 금액과 2년차부터 매년 받는 금액이 다른 게 정상입니다.</li>
+    </ul>
+    <h3>데이터 출처 (2026년 9월 기준 스냅샷)</h3>
+    <ul>
+      <li>주거 — 마이홈 주거복지포털, LH, 복지로, 주택도시기금, 서울주거포털</li>
+      <li>교통 — 모두의카드·K-패스(국토교통부 대광위), 서울시 기후동행패스 전환 안내(2026.9.1 시행), 경기도 청소년 교통비 지원</li>
+      <li>일자리 — 고용노동부 청년일자리도약장려금·국민취업지원제도, 보건복지부 청년내일저축계좌, 서민금융진흥원 청년도약계좌, 서울 청년수당</li>
+    </ul>
+    <h3>한계</h3>
+    <ul>
+      <li>결정세액은 구간별 추정치입니다. 부양가족·의료비·기부금 등에 따라 실제 연말정산 결과와 다릅니다.</li>
+      <li>대출 이자 절감은 시중금리(전세 4.3%, 주담대 4.2%) 가정에서 나온 값이고, 한도를 다 쓴다고 봅니다.</li>
+      <li>공공임대는 추첨·심사를 통과해야 하므로 조건부로 분류했습니다. 당첨되면 실제 절감액은 큽니다.</li>
+      <li>지자체 사업은 서울·경기 일부만 수록했습니다. 최종 자격 판정이 아니라 후보를 좁히는 도구입니다.</li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+"use strict";
+
+/* ============================================================
+   1. 상수
+   ============================================================ */
+const C = {
+  median: [2564238, 4199292, 5359036, 6494738, 7556719],
+  baseRent: [
+    [369000, 414000, 492000, 571000, 591000],
+    [300000, 335000, 401000, 463000, 479000],
+    [247000, 275000, 327000, 381000, 394000],
+    [212000, 238000, 283000, 329000, 340000]
+  ],
+  repairLight: 590,
+  marketJeonse: 4.3,
+  marketMortgage: 4.2,
+  depositToRent: 0.04,
+  transit: { base: 0.20, youth: 0.30, lowIncome: 0.533, metroYouthExtra: 0.10 },
+  // 총급여(만원) → 추정 결정세액(만원)
+  taxPoints: [[2000, 0], [2500, 20], [3000, 45], [3500, 80], [4000, 120], [5000, 200], [6000, 300], [7000, 420], [8000, 560], [10000, 900]]
+};
+const DOMAIN_LABEL = { housing: "주거", transport: "교통", job: "일자리" };
+const DOMAIN_ORDER = ["housing", "transport", "job"];
+const NATURE_LABEL = { cash: "실수령 현금", tax: "절세", loan: "대출 이자 절감", cond: "조건부" };
+const NATURE_ORDER = ["cash", "tax", "loan", "cond"];
+
+const medianOf = hh => C.median[Math.min(hh, 5) - 1];
+const isMetro = p => p.region <= 1;
+const inAge = (p, lo, hi) => p.age >= lo && p.age <= hi;
+const medianRatio = p => (p.income * 10000 / 12) / medianOf(p.hh);
+function incomeRecognized(p) {
+  const basic = p.region <= 1 ? 10000 : 6900;
+  return (p.income * 10000) / 12 + (Math.max(0, p.assets - basic) * 10000 * 0.0426) / 12;
+}
+const actualRentMonthly = p => p.rent * 10000 + (p.deposit * 10000 * C.depositToRent) / 12;
+const personalIncome = p => (p.marital > 0 ? p.income * 0.6 : p.income);
+
+function estTax(p) {
+  if (p.employment !== 0) return 0;
+  const g = personalIncome(p);
+  const pts = C.taxPoints;
+  if (g <= pts[0][0]) return 0;
+  if (g >= pts[pts.length - 1][0]) return pts[pts.length - 1][1] + (g - pts[pts.length - 1][0]) * 0.2;
+  for (let i = 1; i < pts.length; i++) {
+    if (g <= pts[i][0]) {
+      const [x1, y1] = pts[i - 1], [x2, y2] = pts[i];
+      return y1 + (y2 - y1) * (g - x1) / (x2 - x1);
+    }
+  }
+  return 0;
+}
+function transitRate(p) {
+  if (p.welfare > 0) return C.transit.lowIncome;
+  if (inAge(p, 19, 34) || p.children === 3) return C.transit.youth;
+  return C.transit.base;
+}
+
+/* ============================================================
+   2. 제도 데이터베이스
+   nature : cash 실수령현금 / tax 절세 / loan 이자절감 / cond 조건부
+   years  : 지급 지속 연수 (Infinity = 조건 유지되는 한 매년)
+   oneShot: 평생 1회성 (이미 받았으면 제외)
+   ============================================================ */
+const PROGRAMS = [
+  /* ---------------- 주거 ---------------- */
+  { id: "youth_rent_gov", domain: "housing", name: "청년월세 특별지원", org: "국토교통부·복지로",
+    nature: "cash", years: 2, oneShot: true, rentSupport: true,
+    detail: "월 최대 20만원, 최장 24개월. 2026년부터 상시 신청이고 보증금·월세 상한 요건이 없어졌습니다.",
+    need: ["만 19~34세", "무주택", "부모와 별도 거주", "월세 거주"],
+    ok: p => p.tenure === 0 && p.homeless && inAge(p, 19, 34) && medianRatio(p) <= 0.6,
+    value: () => 240 },
+
+  { id: "youth_rent_seoul", domain: "housing", name: "서울시 청년월세지원", org: "서울시",
+    nature: "cash", years: 1, oneShot: true, rentSupport: true,
+    detail: "월 20만원씩 최장 12개월. 평생 한 번이고 국토부 청년월세 특별지원과 같이 못 받습니다.",
+    need: ["서울 거주", "만 19~39세", "무주택", "월세 거주"],
+    ok: p => p.region === 0 && p.tenure === 0 && p.homeless && inAge(p, 19, 39) && medianRatio(p) <= 1.5,
+    value: () => 240 },
+
+  { id: "hb_rent", domain: "housing", name: "주거급여 (임차급여)", org: "국토교통부·LH",
+    nature: "cash", years: Infinity, rentSupport: true,
+    detail: "지역·가구원수별 기준임대료를 상한으로 실제 임차료를 매달 현금 지급합니다.",
+    need: ["소득인정액 중위 48% 이하", "임차 거주"],
+    ok: p => p.tenure <= 1 && (p.welfare === 2 || incomeRecognized(p) <= medianOf(p.hh) * 0.48),
+    value(p) {
+      const cap = C.baseRent[p.region][Math.min(p.hh, 5) - 1];
+      const pay = Math.min(cap, actualRentMonthly(p));
+      const own = Math.max(0, (incomeRecognized(p) - medianOf(p.hh) * 0.32) * 0.3);
+      return Math.max(1, pay - own) * 12 / 10000;
+    } },
+
+  { id: "hb_repair", domain: "housing", name: "주거급여 (수선유지급여)", org: "국토교통부·LH",
+    nature: "cond", years: Infinity, gate: "주택 노후도 조사 통과 후 공사 진행 시",
+    detail: "자가 가구 집수리 비용. 경보수 590만원(3년) / 중보수 1,095만원(5년) / 대보수 1,601만원(7년).",
+    need: ["소득인정액 중위 48% 이하", "자가 거주"],
+    ok: p => p.tenure === 2 && (p.welfare === 2 || incomeRecognized(p) <= medianOf(p.hh) * 0.48),
+    value: () => Math.round(C.repairLight / 3) },
+
+  { id: "youth_beotimok", domain: "housing", name: "청년전용 버팀목 전세자금대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "한도 2억원(25세 미만 단독세대주 1.5억), 금리 연 2%대.",
+    need: ["만 19~34세", "무주택 세대주", "부부합산 5천만원 이하", "보증금 3억 이하"],
+    ok: p => p.tenure <= 1 && p.homeless && inAge(p, 19, 34) && p.income <= 5000 && p.deposit > 0 && p.deposit <= 30000,
+    debt: p => Math.min(p.deposit * 0.8, p.age < 25 ? 15000 : 20000),
+    value(p) { return this.debt(p) * (C.marketJeonse - 2.5) / 100; } },
+
+  { id: "sme_loan", domain: "housing", name: "중소기업취업청년 전월세보증금대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "금리 연 1.5% 고정, 한도 1억원. 정책대출 중 금리가 가장 낮습니다.",
+    need: ["중소·중견기업 재직", "연소득 3,500만원 이하(부부 5천)", "보증금 2억 이하"],
+    ok: p => p.sme && p.tenure <= 1 && p.homeless && inAge(p, 19, 34) &&
+             p.income <= (p.marital === 0 ? 3500 : 5000) && p.deposit > 0 && p.deposit <= 20000,
+    debt: p => Math.min(p.deposit, 10000),
+    value(p) { return this.debt(p) * (C.marketJeonse - 1.5) / 100; } },
+
+  { id: "beotimok", domain: "housing", name: "일반 버팀목 전세자금대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "청년 요건에 안 맞는 무주택 세대주용. 한도 수도권 1.2억 / 그 외 8천만원.",
+    need: ["무주택 세대주", "부부합산 5천만원 이하"],
+    ok: p => p.tenure <= 1 && p.homeless && p.age >= 19 && p.income <= 5000 && p.deposit > 0,
+    debt: p => Math.min(p.deposit * 0.7, isMetro(p) ? 12000 : 8000),
+    value(p) { return this.debt(p) * (C.marketJeonse - 2.8) / 100; } },
+
+  { id: "beotimok_newlywed", domain: "housing", name: "신혼부부 전용 버팀목 전세자금대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "한도 수도권 3억 / 그 외 2억, 금리 연 1.8~3.1%.",
+    need: ["혼인 7년 이내 또는 예비부부", "무주택 세대주", "부부합산 7,500만원 이하"],
+    ok: p => p.marital === 1 && p.tenure <= 1 && p.homeless && p.income <= 7500 && p.deposit > 0,
+    debt: p => Math.min(p.deposit * 0.8, isMetro(p) ? 30000 : 20000),
+    value(p) { return this.debt(p) * (C.marketJeonse - 2.4) / 100; } },
+
+  { id: "beotimok_newborn", domain: "housing", name: "신생아 특례 버팀목 전세자금대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "한도 2.4억원, 특례금리 최초 4년(추가 출산 시 최장 12년).",
+    need: ["2년 내 출산·입양", "부부합산 2억원 이하", "순자산 3.45억 이하"],
+    ok: p => p.children === 1 && p.tenure <= 1 && p.homeless && p.income <= 20000 && p.assets <= 34500 && p.deposit > 0,
+    debt: p => Math.min(p.deposit * 0.8, 24000),
+    value(p) { return this.debt(p) * (C.marketJeonse - 1.8) / 100; } },
+
+  { id: "youth_bojeungbu", domain: "housing", name: "청년전용 보증부월세대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "보증금과 월세를 같이 빌려줍니다. 보증금 4,500만원(연 1.3%), 월세 월 40만원 한도.",
+    need: ["만 19~34세", "연소득 5천만원 이하", "보증금 6,500만 이하", "월세 70만원 이하"],
+    ok: p => p.tenure === 0 && p.homeless && inAge(p, 19, 34) && p.income <= 5000 && p.deposit <= 6500 && p.rent > 0 && p.rent <= 70,
+    debt: p => Math.min(p.deposit, 4500) + Math.min(p.rent, 40) * 12,
+    value(p) {
+      return Math.min(p.deposit, 4500) * (C.marketJeonse - 1.3) / 100
+           + Math.min(p.rent, 40) * 12 * 0.5 * (C.marketJeonse - 1.0) / 100;
+    } },
+
+  { id: "wolse_stability", domain: "housing", name: "주거안정 월세대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "월세를 월 40만원 한도로 2년간 빌려줍니다. 금리 연 1.3~1.8%.",
+    need: ["무주택 세대주", "부부합산 5천만원 이하", "월세 거주"],
+    ok: p => p.tenure === 0 && p.homeless && p.rent > 0 && p.income <= 5000 && p.age >= 19,
+    debt: p => Math.min(p.rent, 40) * 24,
+    value: p => Math.min(p.rent, 40) * 12 * 0.5 * (C.marketJeonse - 1.6) / 100 },
+
+  { id: "didimdol", domain: "housing", name: "내집마련 디딤돌대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "한도 2.5억(생애최초 3억, 신혼 4억), 금리 연 2.65~3.95%.",
+    need: ["무주택 세대주", "부부합산 6천만원 이하(신혼 8,500만)", "주택가격 5억 이하(신혼 6억)"],
+    ok: p => p.tenure === 3 && p.homeless && p.age >= 19 &&
+             p.income <= (p.marital === 1 ? 8500 : 6000) && p.deposit > 0 && p.deposit <= (p.marital === 1 ? 60000 : 50000),
+    debt: p => Math.min(p.deposit * 0.7, p.marital === 1 ? 40000 : 30000),
+    value(p) { return this.debt(p) * (C.marketMortgage - 3.1) / 100; } },
+
+  { id: "didimdol_newborn", domain: "housing", name: "신생아 특례 디딤돌대출", org: "주택도시기금",
+    nature: "loan", years: Infinity,
+    detail: "한도 4억원, 특례금리 연 1.6~3.3%를 5년간 적용합니다.",
+    need: ["2년 내 출산·입양", "부부합산 2억원 이하", "주택가격 9억 이하", "순자산 5.11억 이하"],
+    ok: p => p.children === 1 && p.tenure === 3 && p.homeless && p.income <= 20000 && p.assets <= 51100 && p.deposit > 0 && p.deposit <= 90000,
+    debt: p => Math.min(p.deposit * 0.7, 40000),
+    value(p) { return this.debt(p) * (C.marketMortgage - 2.0) / 100; } },
+
+  { id: "dream_loan", domain: "housing", name: "청년주택드림 대출", org: "주택도시기금",
+    nature: "loan", years: Infinity, gate: "청약 당첨이 전제입니다",
+    detail: "청년주택드림 청약통장으로 당첨되면 분양가의 80%까지 최저 연 2.2%로 빌려줍니다.",
+    need: ["청년주택드림 청약통장", "1년·1천만원 이상 납입 후 당첨", "만 19~39세 무주택", "분양가 6억 이하"],
+    ok: p => p.tenure === 3 && p.homeless && p.account === 2 && inAge(p, 19, 39) && p.deposit > 0 && p.deposit <= 60000,
+    debt: p => Math.min(p.deposit * 0.8, 48000),
+    value(p) { return this.debt(p) * (C.marketMortgage - 2.2) / 100; } },
+
+  { id: "dream_account", domain: "housing", name: "청년주택드림 청약통장", org: "국토교통부",
+    nature: "cash", years: Infinity, deposit: 10, depositGroup: "청약통장",
+    detail: "일반 청약통장보다 높은 연 4.5% 금리에 이자소득 비과세가 붙습니다. 소득공제는 아래 청약저축 소득공제로 따로 잡힙니다.",
+    need: ["만 19~34세", "무주택", "연소득 5천만원 이하", "월 10만원 이상 납입"],
+    ok: p => p.homeless && inAge(p, 19, 34) && p.income <= 5000,
+    value: () => 17 },
+
+  { id: "savings_deduction", domain: "housing", name: "주택청약저축 소득공제", org: "국세청",
+    nature: "tax", years: Infinity, deposit: 25, depositGroup: "청약통장",
+    detail: "연 납입액 300만원까지 40%를 근로소득에서 공제합니다. 한도를 채우려면 월 25만원을 넣어야 합니다.",
+    need: ["총급여 7천만원 이하", "무주택 세대주", "청약통장 보유"],
+    ok: p => p.homeless && p.income <= 7000 && p.account >= 1,
+    value: () => 20 },
+
+  { id: "wolse_tax", domain: "housing", name: "월세 세액공제", org: "국세청",
+    nature: "tax", years: Infinity,
+    detail: "연 1,000만원 한도로 월세액의 15%(총급여 5,500만원 이하는 17%)를 세금에서 빼줍니다.",
+    need: ["총급여 8천만원 이하", "무주택 세대주", "전입신고 완료"],
+    ok: p => p.tenure === 0 && p.homeless && p.income <= 8000 && p.rent > 0,
+    value: p => Math.min(p.rent * 12, 1000) * (personalIncome(p) <= 5500 ? 0.17 : 0.15) },
+
+  { id: "guarantee_fee", domain: "housing", name: "전세보증금 반환보증 보증료 지원", org: "국토교통부·지자체",
+    nature: "cash", years: Infinity,
+    detail: "이미 낸 보증료를 돌려줍니다. 청년·신혼부부는 전액(최대 40만원), 그 외는 90%. 보증 가입 때마다 신청합니다.",
+    need: ["전세·보증부월세", "보증금 3억 이하", "반환보증 가입 완료"],
+    ok: p => p.tenure <= 1 && p.deposit > 0 && p.deposit <= 30000 &&
+             p.income <= (p.age <= 39 ? 5000 : (p.marital === 1 ? 7500 : 6000)),
+    value: () => 20 },
+
+  { id: "seoul_interest", domain: "housing", name: "서울시 청년 임차보증금 이자지원", org: "서울시",
+    nature: "loan", years: Infinity,
+    detail: "협약은행 대출 이자 중 연 2%p를 서울시가 대신 냅니다. 대출 한도 2억원.",
+    need: ["서울 거주", "만 19~39세", "무주택", "연소득 5천만원 이하"],
+    ok: p => p.region === 0 && p.tenure <= 1 && p.homeless && inAge(p, 19, 39) && p.income <= 5000 && p.deposit > 0,
+    debt: p => Math.min(p.deposit * 0.9, 20000),
+    value(p) { return this.debt(p) * 0.02; } },
+
+  { id: "happy_house", domain: "housing", name: "행복주택", org: "LH·지방공사",
+    nature: "cond", years: Infinity, gate: "모집 공고 신청 후 당첨·입주해야 발생",
+    detail: "시세의 60~80% 임대료로 최장 6~10년 거주합니다.",
+    need: ["무주택", "도시근로자 월평균소득 100% 이하", "청년·신혼·고령자 등"],
+    ok: p => p.homeless && p.tenure <= 1 && (p.age <= 39 || p.age >= 65 || p.marital === 1) && medianRatio(p) <= 1.2,
+    value: p => (isMetro(p) ? 260 : 180) },
+
+  { id: "purchase_rental", domain: "housing", name: "청년·신혼 매입임대주택", org: "LH·지방공사",
+    nature: "cond", years: Infinity, gate: "경쟁률이 높아 당첨을 전제할 수 없습니다",
+    detail: "LH가 사들인 주택을 시세의 30~50% 임대료로 빌려줍니다.",
+    need: ["무주택", "중위소득 100% 이하", "청년 또는 신혼"],
+    ok: p => p.homeless && p.tenure <= 1 && (p.age <= 39 || p.marital === 1) && medianRatio(p) <= 1.0,
+    value: p => (isMetro(p) ? 380 : 260) },
+
+  { id: "jeonse_rental", domain: "housing", name: "청년·신혼 전세임대주택", org: "LH",
+    nature: "cond", years: Infinity, gate: "입주 대상자로 선정돼야 발생",
+    detail: "내가 고른 집을 LH가 대신 계약하고 보증금을 대주면 나는 낮은 이자만 냅니다.",
+    need: ["무주택", "중위소득 100% 이하", "만 19~39세 또는 신혼"],
+    ok: p => p.homeless && p.tenure <= 1 && (inAge(p, 19, 39) || p.marital === 1) && medianRatio(p) <= 1.0,
+    value: p => (isMetro(p) ? 320 : 240) },
+
+  { id: "national_rental", domain: "housing", name: "국민임대주택", org: "LH·지방공사",
+    nature: "cond", years: Infinity, gate: "대기 기간이 길고 당첨을 전제할 수 없습니다",
+    detail: "시세의 60~80% 임대료로 최장 30년 거주할 수 있는 장기 공공임대입니다.",
+    need: ["무주택 세대구성원", "도시근로자 월평균소득 70% 이하", "자산 기준 충족"],
+    ok: p => p.homeless && p.tenure <= 1 && medianRatio(p) <= 0.8,
+    value: p => (isMetro(p) ? 240 : 170) },
+
+  /* ---------------- 교통 ---------------- */
+  { id: "modu_card", domain: "transport", name: "모두의카드 대중교통비 환급", org: "국토교통부 대광위",
+    nature: "cash", years: Infinity,
+    detail: "구 K-패스. 월 15회 이상 타면 다음 달에 일정 비율을 돌려줍니다. 정률형과 정액형 중 유리한 쪽이 자동 적용됩니다.",
+    need: ["월 15회 이상 이용", "카드 발급 후 등록"],
+    ok: p => p.transit > 0 && p.rides >= 15,
+    value: p => p.transit * 12 * transitRate(p) },
+
+  { id: "climate_pass", domain: "transport", name: "기후동행패스 청년 확대 (수도권)", org: "서울시·경기·인천",
+    nature: "cash", years: Infinity,
+    detail: "2026년 9월 1일부터 기후동행카드가 모두의카드와 합쳐졌습니다. 수도권은 청년 기준이 만 39세까지라 35~39세도 청년 환급률을 받습니다. 일반 환급률과의 차액만 잡았습니다.",
+    need: ["서울·경기·인천 거주", "만 35~39세", "모두의카드 이용"],
+    ok: p => isMetro(p) && inAge(p, 35, 39) && p.transit > 0 && p.rides >= 15 && p.welfare === 0,
+    value: p => p.transit * 12 * C.transit.metroYouthExtra },
+
+  { id: "senior_free", domain: "transport", name: "어르신 도시철도 무임승차", org: "지자체 도시철도",
+    nature: "cash", years: Infinity,
+    detail: "만 65세 이상은 수도권·광역시 도시철도를 무료로 이용합니다. 무임 구간에는 환급받을 요금이 남지 않습니다.",
+    need: ["만 65세 이상", "도시철도 운영 지역"],
+    ok: p => p.age >= 65 && p.region <= 2 && p.transit > 0,
+    value: p => p.transit * 12 * 0.7 },
+
+  { id: "gg_teen_transit", domain: "transport", name: "경기도 청소년 교통비 지원", org: "경기도",
+    nature: "cash", years: Infinity,
+    detail: "경기도에 사는 청소년·청년에게 교통비를 연 최대 12만원까지 지역화폐로 돌려줍니다.",
+    need: ["경기도 거주", "만 13~23세"],
+    ok: p => p.region === 1 && p.age >= 13 && p.age <= 23,
+    value: () => 12 },
+
+  /* ---------------- 일자리 ---------------- */
+  { id: "leap_incentive", domain: "job", name: "청년일자리도약장려금 (청년 인센티브)", org: "고용노동부",
+    nature: "cash", years: 2, oneShot: true,
+    detail: "비수도권 중소기업에 정규직으로 취업한 청년에게 근속 6·12·18·24개월마다 지급합니다. 일반 480만원, 우대지역 600만원, 특별지원지역 720만원. 수도권은 기업 지원금만 나옵니다.",
+    need: ["만 15~34세", "비수도권 중소·중견기업 정규직", "6개월 이상 근속"],
+    ok: p => p.employment === 0 && p.sme && !isMetro(p) && p.age >= 15 && p.age <= 34,
+    value: () => 240 },
+
+  { id: "sme_tax_cut", domain: "job", name: "중소기업 취업자 소득세 감면", org: "국세청",
+    nature: "tax", years: 5,
+    detail: "중소기업에 취업한 청년은 5년간 소득세의 90%를 연 200만원 한도로 감면받습니다. 낼 세금 자체가 줄어드는 것이라 다른 세액공제보다 먼저 적용됩니다.",
+    need: ["만 15~34세", "중소기업 재직", "감면 신청서 제출"],
+    ok: p => p.employment === 0 && p.sme && p.age >= 15 && p.age <= 34,
+    value: p => Math.min(estTax(p) * 0.9, 200) },
+
+  { id: "kua_type1", domain: "job", name: "국민취업지원제도 Ⅰ유형 구직촉진수당", org: "고용노동부",
+    nature: "cash", years: 1, oneShot: true,
+    detail: "2026년부터 월 60만원으로 올랐고 6개월간 지급합니다. 청년은 중위소득 120% 이하까지 선발형으로 신청할 수 있습니다.",
+    need: ["구직 중", "만 15~69세", "중위소득 60% 이하(청년 120%)", "재산 4억 이하"],
+    ok: p => p.employment === 1 && p.age >= 15 && p.age <= 69 &&
+             medianRatio(p) <= ((p.age >= 15 && p.age <= 34) ? 1.2 : 0.6) && p.assets <= 40000,
+    value: () => 360 },
+
+  { id: "kua_type2", domain: "job", name: "국민취업지원제도 Ⅱ유형 취업활동비용", org: "고용노동부",
+    nature: "cash", years: 1, oneShot: true,
+    detail: "직업훈련에 참여하는 동안 훈련참여지원수당을 월 최대 28만원가량 받습니다. 청년은 소득 요건 없이 신청할 수 있습니다.",
+    need: ["구직 중", "직업훈련 참여", "청년은 소득 무관"],
+    ok: p => p.employment === 1 && ((p.age >= 15 && p.age <= 34) || medianRatio(p) <= 1.0),
+    value: () => 170 },
+
+  { id: "seoul_youth_allow", domain: "job", name: "서울시 청년수당", org: "서울시",
+    nature: "cash", years: 1, oneShot: true,
+    detail: "미취업 청년에게 월 50만원을 최장 6개월 지원합니다. 평생 한 번이고 국민취업지원제도 참여자는 제외됩니다.",
+    need: ["서울 거주", "만 19~34세", "미취업", "중위소득 150% 이하"],
+    ok: p => p.region === 0 && p.employment === 1 && inAge(p, 19, 34) && medianRatio(p) <= 1.5,
+    value: () => 300 },
+
+  { id: "youth_challenge", domain: "job", name: "청년도전지원사업", org: "고용노동부",
+    nature: "cash", years: 1, oneShot: true,
+    detail: "구직을 단념한 청년의 사회 복귀를 돕는 프로그램. 이수하면 최대 300만원의 참여수당과 인센티브를 받습니다.",
+    need: ["만 18~34세", "구직단념 상태", "프로그램 이수"],
+    ok: p => p.employment === 1 && p.age >= 18 && p.age <= 34,
+    value: () => 150 },
+
+  { id: "youth_savings", domain: "job", name: "청년내일저축계좌", org: "보건복지부",
+    nature: "cash", years: 3, oneShot: true, deposit: 10, depositGroup: "내일저축",
+    detail: "매달 10만원을 넣으면 정부가 30만원을 얹어 3년 뒤 1,440만원이 됩니다. 2026년부터 차상위 이하로 대상이 좁혀졌습니다.",
+    need: ["만 15~39세", "근로·사업소득 월 10만원 이상", "가구 중위소득 50% 이하", "월 10만원 납입"],
+    ok: p => p.employment === 0 && p.age >= 15 && p.age <= 39 && medianRatio(p) <= 0.5,
+    value: () => 360 },
+
+  { id: "youth_leap_account", domain: "job", name: "청년도약계좌", org: "서민금융진흥원",
+    nature: "cash", years: 5, deposit: 70, depositGroup: "도약계좌",
+    detail: "5년 만기 적금에 정부기여금과 비과세가 붙습니다. 월 70만원을 다 넣어야 기여금을 최대로 받습니다.",
+    need: ["만 19~34세", "개인소득 7,500만원 이하", "가구 중위소득 250% 이하", "월 납입 필요"],
+    ok: p => p.employment === 0 && inAge(p, 19, 34) && p.income > 0 && p.income <= 7500,
+    value: () => 60 },
+
+  { id: "learning_card", domain: "job", name: "국민내일배움카드", org: "고용노동부",
+    nature: "cond", years: 5, gate: "훈련 과정을 실제로 수강할 때만 집행",
+    detail: "5년간 300~500만원의 훈련비를 지원합니다. 실업자·재직자 모두 발급받을 수 있습니다.",
+    need: ["훈련 과정 수강 시에만 사용"],
+    ok: p => p.age >= 15 && p.employment !== 2,
+    value: () => 100 }
+];
+
+const IDX = {}; PROGRAMS.forEach((pr, i) => { IDX[pr.id] = i; });
+const N_PROG = PROGRAMS.length;
+const ONE_SHOTS = PROGRAMS.filter(pr => pr.oneShot);
+
+/* ============================================================
+   3. 관계 — 완전 배타 / 감액 / 상태 충돌
+   ============================================================ */
+const EXCLUSIVE_GROUPS = [
+  { label: "월세 현금지원", domain: "housing", ids: ["youth_rent_gov", "youth_rent_seoul", "hb_rent"],
+    why: "국토부·지자체 청년월세지원과 주거급여는 서로 중복 수급이 제한됩니다." },
+  { label: "주거급여 유형", domain: "housing", ids: ["hb_rent", "hb_repair"],
+    why: "임차급여와 수선유지급여는 점유 형태에 따라 하나만 받습니다." },
+  { label: "전세·보증금 대출", domain: "housing", ids: ["youth_beotimok", "sme_loan", "beotimok", "beotimok_newlywed", "beotimok_newborn", "youth_bojeungbu", "seoul_interest", "jeonse_rental"],
+    why: "한 건의 임대차 계약에 기금 전세대출은 한 상품만 실행됩니다. 서울시 이자지원은 협약은행 대출이라 기금대출과 함께 쓸 수 없습니다." },
+  { label: "월세 자금 대출", domain: "housing", ids: ["youth_bojeungbu", "wolse_stability"],
+    why: "월세 자금을 빌려주는 기금 상품끼리는 중복 실행되지 않습니다." },
+  { label: "주택 구입 대출", domain: "housing", ids: ["didimdol", "didimdol_newborn", "dream_loan"],
+    why: "주택 구입자금 기금대출은 한 건만 받을 수 있습니다." },
+  { label: "공공임대 입주", domain: "housing", ids: ["happy_house", "purchase_rental", "jeonse_rental", "national_rental"],
+    why: "공공임대주택에는 한 곳만 입주할 수 있습니다." },
+  { label: "대중교통비 지원", domain: "transport", ids: ["modu_card", "senior_free"],
+    why: "무임승차로 요금을 내지 않으면 환급받을 금액도 남지 않습니다." },
+  { label: "구직기 현금지원", domain: "job", ids: ["kua_type1", "kua_type2", "seoul_youth_allow", "youth_challenge"],
+    why: "국민취업지원제도는 Ⅰ·Ⅱ유형 중 하나만 참여할 수 있고, 서울 청년수당과 청년도전지원사업도 국민취업지원제도 참여자를 제외합니다." }
+];
+const EXCLUSIVE_PAIRS = [];
+(function () {
+  const rentals = ["happy_house", "purchase_rental", "jeonse_rental", "national_rental"];
+  const loans = ["youth_beotimok", "sme_loan", "beotimok", "beotimok_newlywed", "beotimok_newborn", "youth_bojeungbu", "seoul_interest", "wolse_stability"];
+  rentals.forEach(r => {
+    ["youth_rent_gov", "youth_rent_seoul"].forEach(w => EXCLUSIVE_PAIRS.push([r, w, "공공임대 입주자는 청년월세지원 대상에서 제외됩니다."]));
+    loans.forEach(l => EXCLUSIVE_PAIRS.push([r, l, "공공임대 보증금은 기금 전세·월세대출 대상이 아닙니다."]));
+    EXCLUSIVE_PAIRS.push([r, "guarantee_fee", "공공임대는 전세보증금 반환보증 가입 대상이 아닙니다."]);
+  });
+  EXCLUSIVE_PAIRS.push(["climate_pass", "senior_free", "무임승차 대상이면 환급률 확대를 적용할 요금이 없습니다."]);
+})();
+
+// 감액 관계 — 함께 받을 수는 있지만 한쪽 금액이 줄어듭니다
+const REDUCTIONS = [
+  { from: ["youth_rent_gov", "youth_rent_seoul", "hb_rent"], to: "wolse_tax",
+    label: "월세 지원금은 내가 부담한 월세가 아니라서 세액공제 대상 월세에서 빠집니다." }
+];
+
+const CONFLICT = Array.from({ length: N_PROG }, () => new Uint8Array(N_PROG));
+const CONFLICT_WHY = {};
+function addConflict(a, b, why) {
+  const i = IDX[a], j = IDX[b];
+  if (i === undefined || j === undefined || i === j) return;
+  CONFLICT[i][j] = CONFLICT[j][i] = 1;
+  const k = Math.min(i, j) + "-" + Math.max(i, j);
+  if (!CONFLICT_WHY[k]) CONFLICT_WHY[k] = why;
+}
+EXCLUSIVE_GROUPS.forEach(g => {
+  for (let a = 0; a < g.ids.length; a++) for (let b = a + 1; b < g.ids.length; b++) addConflict(g.ids[a], g.ids[b], g.why);
+});
+EXCLUSIVE_PAIRS.forEach(([a, b, w]) => addConflict(a, b, w));
+
+/* ============================================================
+   4. 실현 금액 계산 — 고른 조합을 실제 숫자로 환산
+   ============================================================ */
+function evaluate(set, p) {
+  const chosen = new Set(set);
+  const detail = {};
+  const bucket = { cash: 0, tax: 0, loan: 0, cond: 0 };
+  const bucketY2 = { cash: 0, tax: 0, loan: 0, cond: 0 };
+  let nominal = 0, debt = 0;
+  const alive = y => (y === Infinity ? true : y >= 2);
+
+  // 0) 명목 금액 — 대출성 제도는 희망 대출금액으로 원금을 먼저 제한합니다
+  const loanScale = {};
+  for (const k of set) {
+    const pr = PROGRAMS[k];
+    let nom = pr.value(p);
+    if (pr.nature === "loan" && pr.debt) {
+      const raw = pr.debt(p);
+      const capped = (p.loanAmount > 0) ? Math.min(raw, p.loanAmount) : raw;
+      const scale = raw > 0 ? capped / raw : 1;
+      loanScale[k] = scale;
+      nom *= scale;
+    }
+    detail[k] = { nominal: nom, real: nom, notes: [], zero: false };
+    nominal += nom;
+  }
+
+  // 1) 월세 현금지원 확정 → 실부담 월세 계산 (감액 관계)
+  let supportMonthly = 0;
+  for (const k of set) {
+    const pr = PROGRAMS[k];
+    if (pr.rentSupport) supportMonthly += detail[k].nominal / 12;
+  }
+  const effRent = Math.max(0, p.rent - supportMonthly);
+
+  // 2) 절세 항목의 상한 미리 계산 — 저축 여력을 어디에 쓸지 판단하는 데 필요합니다
+  const taxOrder = ["sme_tax_cut", "wolse_tax", "savings_deduction"];
+  const potential = {};
+  {
+    let room = estTax(p);
+    for (const id of taxOrder) {
+      const k = IDX[id];
+      if (!chosen.has(k)) continue;
+      let want = detail[k].nominal;
+      if (id === "wolse_tax") want = Math.min(Math.max(0, p.rent - supportMonthly) * 12, 1000) * (personalIncome(p) <= 5500 ? 0.17 : 0.15);
+      const got = Math.max(0, Math.min(want, room));
+      room -= got;
+      potential[k] = got;
+    }
+  }
+  const worth = k => (PROGRAMS[k].nature === "tax" ? (potential[k] || 0) : detail[k].nominal);
+
+  // 3) 저축 여력 배분 — 넣을 수 있는 만큼만 실현
+  const groups = {};
+  for (const k of set) {
+    const pr = PROGRAMS[k];
+    if (!pr.deposit) continue;
+    const g = pr.depositGroup || pr.id;
+    (groups[g] = groups[g] || { need: 0, members: [] });
+    groups[g].need = Math.max(groups[g].need, pr.deposit);
+    groups[g].members.push(k);
+  }
+  const gList = Object.entries(groups).map(([name, g]) => {
+    const val = g.members.reduce((a, k) => a + worth(k), 0);
+    return { name, ...g, eff: val / Math.max(1, g.need) };
+  }).sort((a, b) => b.eff - a.eff);
+  let room = p.saving;
+  const ratio = {};
+  for (const g of gList) {
+    const got = Math.min(room, g.need);
+    room -= got;
+    const r = g.need > 0 ? got / g.need : 1;
+    g.members.forEach(k => {
+      ratio[k] = r;
+      if (r < 0.999) detail[k].notes.push({ t: "warn", s: `저축 여력 부족 (월 ${Math.round(got)}만원 / ${g.need}만원 필요)` });
+    });
+  }
+
+  // 4) 세금 — 감면부터 적용하고 남은 세액 안에서 공제
+  let taxRoom = estTax(p);
+  const taxNote = p.employment !== 0
+    ? "재직 중이 아니라 낼 근로소득세가 없다고 봅니다"
+    : `추정 결정세액 ${Math.round(taxRoom)}만원이 한도`;
+
+  for (const id of taxOrder) {
+    const k = IDX[id];
+    if (!chosen.has(k)) continue;
+    const d = detail[k];
+    let want = d.nominal;
+    if (id === "wolse_tax") {
+      want = Math.min(effRent * 12, 1000) * (personalIncome(p) <= 5500 ? 0.17 : 0.15);
+      if (supportMonthly > 0) d.notes.push({ t: "warn", s: `월세 지원 ${Math.round(supportMonthly)}만원/월 차감 후 기준` });
+    }
+    if (ratio[k] !== undefined) want *= ratio[k];
+    const got = Math.max(0, Math.min(want, taxRoom));
+    if (got < d.nominal - 0.5) d.notes.push({ t: got <= 0.5 ? "zero" : "warn", s: taxNote });
+    taxRoom -= got;
+    d.real = got;
+    d.zero = got <= 0.5;
+  }
+
+  // 5) 나머지 항목 확정
+  for (const k of set) {
+    const pr = PROGRAMS[k];
+    const d = detail[k];
+    if (pr.nature === "tax") { /* 위에서 처리 */ }
+    else {
+      if (ratio[k] !== undefined) d.real = d.nominal * ratio[k];
+      if (pr.gate) d.notes.push({ t: "warn", s: pr.gate });
+    }
+    if (pr.nature === "loan" && pr.debt) {
+      const raw = pr.debt(p);
+      const capped = raw * (loanScale[k] !== undefined ? loanScale[k] : 1);
+      debt += capped;
+      d.notes.push({ t: "warn", s: `대출 ${fmtMan(capped)} 실행이 전제` });
+      if (loanScale[k] !== undefined && loanScale[k] < 0.999) {
+        d.notes.push({ t: "warn", s: `희망 대출금액 ${fmtMan(p.loanAmount)}에 맞춰 한도(${fmtMan(raw)})보다 적게 계산` });
+      }
+    }
+    if (pr.years !== Infinity) d.notes.push({ t: "", s: pr.years === 1 ? "1년만 지급" : `${pr.years}년간 지급` });
+    bucket[pr.nature] += d.real;
+    if (alive(pr.years)) bucketY2[pr.nature] += d.real;
+  }
+
+  const realized = bucket.cash + bucket.tax;
+  const realizedY2 = bucketY2.cash + bucketY2.tax;
+  return { detail, bucket, bucketY2, nominal, realized, realizedY2, debt, effRent, supportMonthly, taxBase: estTax(p) };
+}
+const fmtMan = n => (n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, "") + "억원" : Math.round(n).toLocaleString("ko-KR") + "만원");
+
+/* ============================================================
+   5. 조합 최적화 — 성분별 후보를 만들고 지역 탐색
+   ============================================================ */
+function components(cand) {
+  const seen = new Set(), comps = [];
+  for (const s of cand) {
+    if (seen.has(s)) continue;
+    const comp = [], stack = [s]; seen.add(s);
+    while (stack.length) {
+      const v = stack.pop(); comp.push(v);
+      for (const u of cand) if (!seen.has(u) && CONFLICT[v][u]) { seen.add(u); stack.push(u); }
+    }
+    comps.push(comp);
+  }
+  return comps;
+}
+function optionsOf(comp) {
+  if (comp.length === 1) return [comp.slice()];
+  if (comp.length > 16) return [comp.slice(0, 1)];
+  const out = [];
+  const lim = 1 << comp.length;
+  for (let m = 0; m < lim; m++) {
+    const pick = [];
+    let ok = true;
+    for (let i = 0; i < comp.length && ok; i++) {
+      if (!(m & (1 << i))) continue;
+      for (const c of pick) if (CONFLICT[comp[i]][c]) { ok = false; break; }
+      if (ok) pick.push(comp[i]);
+    }
+    if (ok) out.push(pick);
+  }
+  return out;
+}
+function scoreOf(ev, n, mode) {
+  return mode === "count"
+    ? [n, ev.realized, ev.realizedY2, ev.bucket.loan + ev.bucket.cond]
+    : [ev.realized, ev.realizedY2, ev.bucket.loan + ev.bucket.cond, n];
+}
+const better = (a, b) => {
+  for (let i = 0; i < a.length; i++) { if (a[i] > b[i] + 1e-9) return true; if (a[i] < b[i] - 1e-9) return false; }
+  return false;
+};
+function optimize(cand, p, mode) {
+  const comps = components(cand);
+  const opts = comps.map(optionsOf);
+  let pick = opts.map(o => o.reduce((best, x) => (x.length > best.length ? x : best), []));
+  const assemble = (arr) => arr.flat();
+  let cur = assemble(pick), curEv = evaluate(cur, p), curScore = scoreOf(curEv, cur.length, mode);
+  for (let round = 0; round < 4; round++) {
+    let moved = false;
+    for (let c = 0; c < comps.length; c++) {
+      let bestOpt = pick[c], bestScore = curScore, bestEv = curEv, bestSet = cur;
+      for (const o of opts[c]) {
+        if (o === pick[c]) continue;
+        const trial = pick.slice(); trial[c] = o;
+        const set = assemble(trial);
+        const ev = evaluate(set, p);
+        const sc = scoreOf(ev, set.length, mode);
+        if (better(sc, bestScore)) { bestScore = sc; bestOpt = o; bestEv = ev; bestSet = set; }
+      }
+      if (bestOpt !== pick[c]) { pick[c] = bestOpt; curScore = bestScore; curEv = bestEv; cur = bestSet; moved = true; }
+    }
+    if (!moved) break;
+  }
+  const order = (a, b) => curEv.detail[b].real - curEv.detail[a].real || curEv.detail[b].nominal - curEv.detail[a].nominal;
+  return { set: cur.slice().sort(order), ev: curEv };
+}
+
+/* ============================================================
+   6. 사전 계산 테이블 — 자격 후보를 미리 구해 둡니다
+   ============================================================ */
+const DIM = {
+  age:        { vals: [16, 22, 27, 32, 37, 50, 70], edges: [19, 25, 30, 35, 40, 65], get: p => p.age },
+  income:     { vals: [1800, 2400, 2900, 3400, 3900, 4600, 5600, 7200, 11000, 18000], edges: [2000, 2500, 3000, 3500, 4000, 5000, 6000, 8500, 13000], get: p => p.income },
+  hh:         { vals: [1, 2, 3, 4, 5], get: p => Math.min(Math.max(p.hh, 1), 5), direct: true },
+  region:     { vals: [0, 1, 2, 3], get: p => p.region, direct: true },
+  tenure:     { vals: [0, 1, 2, 3], get: p => p.tenure, direct: true },
+  marital:    { vals: [0, 1, 2], get: p => p.marital, direct: true },
+  children:   { vals: [0, 1, 2, 3], get: p => p.children, direct: true },
+  newborn:    { vals: [0, 1], get: p => (p.children === 1 ? 1 : 0), direct: true, apply: (p, v) => { p.children = v ? 1 : 0; } },
+  homeless:   { vals: [1, 0], get: p => (p.homeless ? 1 : 0), direct: true, apply: (p, v) => { p.homeless = v === 1; } },
+  sme:        { vals: [1, 0], get: p => (p.sme ? 1 : 0), direct: true, apply: (p, v) => { p.sme = v === 1; } },
+  welfare:    { vals: [0, 1, 2], get: p => p.welfare, direct: true },
+  employment: { vals: [0, 1, 2], get: p => p.employment, direct: true }
+};
+function bandOf(name, raw) {
+  const d = DIM[name];
+  if (d.direct) { const k = d.vals.indexOf(raw); return k < 0 ? 0 : k; }
+  let i = 0;
+  if (name === "income") { while (i < d.edges.length && raw > d.edges[i]) i++; return i; }
+  while (i < d.edges.length && raw >= d.edges[i]) i++;
+  return i;
+}
+const repDeposit = (r, t) => t === 1 ? [22000, 17000, 12000, 9000][r] : t === 3 ? [55000, 42000, 30000, 24000][r] : t === 2 ? 0 : [3000, 2200, 1500, 1000][r];
+const repRent = (r, t) => t === 0 ? [60, 48, 40, 33][r] : 0;
+
+const TABLES = {
+  housing:   { dims: ["age", "income", "hh", "region", "tenure", "marital", "newborn", "homeless", "sme", "welfare"] },
+  transport: { dims: ["age", "region", "welfare", "children"] },
+  job:       { dims: ["age", "income", "hh", "region", "employment", "sme", "welfare"] }
+};
+DOMAIN_ORDER.forEach(d => {
+  const t = TABLES[d];
+  t.members = PROGRAMS.map((pr, i) => (pr.domain === d ? i : -1)).filter(i => i >= 0);
+  t.stride = []; let n = 1;
+  for (let i = t.dims.length - 1; i >= 0; i--) { t.stride[i] = n; n *= DIM[t.dims[i]].vals.length; }
+  t.size = n;
+});
+const CELLS = DOMAIN_ORDER.reduce((a, d) => a + TABLES[d].size, 0);
+const SPACE = Object.keys(DIM).filter(k => k !== "newborn").reduce((a, k) => a * DIM[k].vals.length, 1);
+let PATTERNS = 0, BUILD_MS = 0, READY = false;
+
+const baseProfile = () => ({
+  age: 30, income: 3000, hh: 1, region: 0, tenure: 0, marital: 0, children: 0,
+  homeless: true, sme: false, welfare: 0, employment: 0,
+  deposit: 3000, rent: 55, assets: 4000, account: 1, transit: 7, rides: 40, saving: 30, used: {},
+  loanOn: true, loanAmount: 0
+});
+function fillFromTable(p, domain, ix) {
+  const t = TABLES[domain];
+  for (let i = 0; i < t.dims.length; i++) {
+    const name = t.dims[i], d = DIM[name], v = d.vals[ix[i]];
+    if (d.apply) d.apply(p, v); else p[name] = v;
+  }
+  p.deposit = repDeposit(p.region, p.tenure);
+  p.rent = repRent(p.region, p.tenure);
+  p.assets = p.welfare === 2 ? 2000 : p.welfare === 1 ? 5000 : Math.min(p.income * 2, 30000);
+  if (p.welfare === 2) p.income = Math.min(p.income, 1400);
+  p.account = 1; p.transit = 7; p.rides = 40; p.saving = 30;
+  return p;
+}
+function buildAll(onProgress, done) {
+  const patterns = new Set();
+  const t0 = performance.now();
+  let di = 0, i = 0, ix = null, p = null;
+  function startDomain() {
+    const t = TABLES[DOMAIN_ORDER[di]];
+    t.elig = new Int32Array(t.size);
+    ix = new Array(t.dims.length).fill(0); p = baseProfile(); i = 0;
+  }
+  function chunk() {
+    const d = DOMAIN_ORDER[di], t = TABLES[d], members = t.members;
+    const end = Math.min(i + 16000, t.size);
+    for (; i < end; i++) {
+      let rem = i;
+      for (let k = 0; k < t.dims.length; k++) { ix[k] = (rem / t.stride[k]) | 0; rem %= t.stride[k]; }
+      fillFromTable(p, d, ix);
+      let mask = 0;
+      for (let mi = 0; mi < members.length; mi++) if (PROGRAMS[members[mi]].ok(p)) mask |= (1 << mi);
+      t.elig[i] = mask;
+      patterns.add(d + mask);
+    }
+    onProgress(Math.min(1, (DOMAIN_ORDER.slice(0, di).reduce((a, x) => a + TABLES[x].size, 0) + i) / CELLS));
+    if (i < t.size) { setTimeout(chunk, 0); return; }
+    di++;
+    if (di < DOMAIN_ORDER.length) { startDomain(); setTimeout(chunk, 0); }
+    else { PATTERNS = patterns.size; BUILD_MS = performance.now() - t0; READY = true; done(); }
+  }
+  startDomain(); chunk();
+}
+function tableLookup(domain, p) {
+  const t = TABLES[domain];
+  let idx = 0;
+  for (let i = 0; i < t.dims.length; i++) idx += bandOf(t.dims[i], DIM[t.dims[i]].get(p)) * t.stride[i];
+  return { idx, mask: t.elig[idx] };
+}
+
+/* ============================================================
+   7. 조회
+   ============================================================ */
+function query(p) {
+  const t0 = performance.now();
+  const pre = {}; const preSet = new Set();
+  DOMAIN_ORDER.forEach(d => {
+    const { idx, mask } = tableLookup(d, p);
+    pre[d] = { idx, mask };
+    TABLES[d].members.forEach((gi, mi) => { if (mask & (1 << mi)) preSet.add(gi); });
+  });
+  const cand = [];
+  for (let k = 0; k < N_PROG; k++) {
+    if (p.used[PROGRAMS[k].id]) continue;
+    if (PROGRAMS[k].nature === "loan" && !p.loanOn) continue;
+    if (PROGRAMS[k].ok(p)) cand.push(k);
+  }
+  if (!p.loanOn) for (let k = 0; k < N_PROG; k++) if (PROGRAMS[k].nature === "loan") preSet.delete(k);
+  const exact = new Set(cand);
+  let diff = 0;
+  for (let k = 0; k < N_PROG; k++) if (preSet.has(k) !== exact.has(k)) diff++;
+  const real = optimize(cand, p, "real");
+  return { pre, cand, real, diff, ms: performance.now() - t0 };
+}
+
+/* ============================================================
+   8. 화면
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const fmt = n => Math.round(n).toLocaleString("ko-KR");
+
+function ageFromYYYYMMDD(str) {
+  const f = (str || "").replace(/\D/g, "").padEnd(8, "0").slice(0, 8);
+  const year = parseInt(f.slice(0, 4), 10) || 1990;
+  const mm = Math.min(12, Math.max(1, parseInt(f.slice(4, 6), 10) || 1));
+  const dd = Math.min(31, Math.max(1, parseInt(f.slice(6, 8), 10) || 1));
+  const b = new Date(year, mm - 1, dd), t = new Date(2026, 8, 12);
+  let a = t.getFullYear() - b.getFullYear();
+  const m = t.getMonth() - b.getMonth();
+  if (m < 0 || (m === 0 && t.getDate() < b.getDate())) a--;
+  return { age: Math.max(0, a), year, month: mm, day: dd };
+}
+function currentBirth() {
+  return ageFromYYYYMMDD($("#birth8").value);
+}
+function readForm() {
+  const g = n => document.querySelector(`input[name="${n}"]:checked`).value;
+  const tenure = +g("tenure");
+  let deposit = Math.max(0, +$("#deposit").value || 0);
+  let rent = Math.max(0, +$("#rent").value || 0);
+  if (tenure === 2) { deposit = 0; rent = 0; }
+  if (tenure !== 0) rent = 0;
+  const employment = +g("employment");
+  const used = {};
+  document.querySelectorAll('#usedBox input:checked').forEach(el => { used[el.value] = true; });
+  const loanOn = g("loanon") === "1";
+  return {
+    age: currentBirth().age, marital: +g("marital"), children: +g("children"),
+    hh: +$("#hh").value, region: +$("#region").value, tenure, deposit, rent,
+    income: Math.max(0, +$("#income").value || 0),
+    assets: Math.max(0, +$("#assets").value || 0),
+    saving: Math.max(0, +$("#saving").value || 0),
+    homeless: g("homeless") === "1",
+    sme: employment === 0 && g("sme") === "1",
+    welfare: +g("welfare"), account: +g("account"), employment,
+    transit: Math.max(0, +$("#transit").value || 0),
+    rides: Math.max(0, +$("#rides").value || 0),
+    used,
+    loanOn,
+    loanAmount: loanOn ? Math.max(0, +$("#loanAmount").value || 0) : 0
+  };
+}
+
+function itemHTML(k, d) {
+  const pr = PROGRAMS[k];
+  const cut = d.real < d.nominal - 0.5;
+  const chips = d.notes.map(n => `<span class="chip ${n.t}">${n.s}</span>`).join("")
+    + pr.need.map(n => `<span class="chip">${n}</span>`).join("");
+  return `<li>
+    <div class="it-top">
+      <span class="it-name"><span class="nat ${pr.nature === "cond" ? "cond" : pr.nature}">${NATURE_LABEL[pr.nature]}</span>${pr.name}</span>
+      <span class="it-val num">${cut ? `<s>${fmt(d.nominal)}</s>` : ""}${fmt(d.real)}만원</span>
+    </div>
+    <div class="it-meta">${pr.org} · 연간 환산${pr.years === Infinity ? "" : " · " + pr.years + "년 한정"}</div>
+    <div>${chips}</div>
+  </li>`;
+}
+
+function branchHTML(cls, kind, r) {
+  const { set, ev } = r;
+  const bk = NATURE_ORDER.filter(n => ev.bucket[n] > 0.5)
+    .map(n => `<span class="bk ${n === "cond" ? "cond" : n}">${NATURE_LABEL[n]} ${fmt(ev.bucket[n])}만원</span>`).join("");
+  let body = "";
+  DOMAIN_ORDER.forEach(d => {
+    const inD = set.filter(k => PROGRAMS[k].domain === d);
+    if (!inD.length) { body += `<div class="dom none"><span class="dn">${DOMAIN_LABEL[d]}</span><span class="dv">해당 없음</span></div>`; return; }
+    const dsum = inD.reduce((a, k) => a + ev.detail[k].real, 0);
+    body += `<div class="dom"><span class="dn">${DOMAIN_LABEL[d]} ${inD.length}개</span><span class="dv num">${fmt(dsum)}만원</span></div>`;
+    body += `<ul class="items">${inD.map(k => itemHTML(k, ev.detail[k])).join("")}</ul>`;
+  });
+  return `<div class="branch ${cls}">
+    <div class="bh">
+      <div class="kind">${kind}</div>
+      <div class="yrs">
+        <div class="box now"><div class="yl">1년차 실현 금액</div><div class="yv num">${fmt(ev.realized)}<small>만원</small></div></div>
+        <div class="box"><div class="yl">2년차부터 매년</div><div class="yv num">${fmt(ev.realizedY2)}<small>만원</small></div></div>
+      </div>
+      <div class="ideal">표기상 합산 <b class="num">${fmt(ev.nominal)}만원</b> · 차이 <b class="num">${fmt(ev.nominal - ev.realized)}만원</b></div>
+      <div class="buckets">${bk}</div>
+      ${ev.debt > 0 ? `<div class="same">이 조합은 대출 ${fmtMan(ev.debt)}을 실행한다는 전제입니다.</div>` : ""}
+    </div>${body}</div>`;
+}
+
+function conflictNotes(chosen, cand) {
+  const out = [], seen = new Set();
+  for (const c of cand) {
+    if (chosen.includes(c)) continue;
+    for (const ch of chosen) {
+      if (CONFLICT[c][ch]) {
+        const key = Math.min(c, ch) + "-" + Math.max(c, ch);
+        const line = `<b>${PROGRAMS[c].name}</b> — ${PROGRAMS[ch].name}과(와) 함께 받을 수 없습니다. ${CONFLICT_WHY[key] || ""}`;
+        if (!seen.has(line)) { seen.add(line); out.push(line); }
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+function render(p) {
+  const r = query(p);
+  if (!r.cand.length) {
+    $("#out").innerHTML = `<div class="results"><div class="empty"><h3>조건에 맞는 제도를 찾지 못했습니다</h3>
+      <p>소득이나 주택 소유 요건에서 걸린 경우가 대부분입니다. 소득이 부부 합산인지 확인하고, 고용 상태와 주거 형태를 바꿔 다시 조회해 보세요.</p></div></div>`;
+    return;
+  }
+  const R = r.real;
+  const gapItems = [];
+  if (R.ev.bucket.loan > 0.5) gapItems.push(`대출 이자 절감 <b>${fmt(R.ev.bucket.loan)}만원</b>은 ${fmtMan(R.ev.debt)}을 빌렸을 때 아끼는 이자입니다. 통장에 들어오는 돈이 아닙니다.`);
+  if (R.ev.bucket.cond > 0.5) gapItems.push(`조건부 <b>${fmt(R.ev.bucket.cond)}만원</b>은 추첨·심사·수강 같은 관문을 통과해야 발생합니다.`);
+  const taxCut = R.set.filter(k => PROGRAMS[k].nature === "tax" && R.ev.detail[k].real < R.ev.detail[k].nominal - 0.5);
+  if (taxCut.length) gapItems.push(`절세 항목은 추정 결정세액 <b>${fmt(R.ev.taxBase)}만원</b>을 넘을 수 없어 ${taxCut.map(k => PROGRAMS[k].name).join(", ")}이 줄었습니다.`);
+  if (R.ev.supportMonthly > 0) gapItems.push(`월세 지원 <b>${fmt(R.ev.supportMonthly)}만원/월</b>을 뺀 실부담 월세 ${fmt(R.ev.effRent)}만원으로 세액공제를 계산했습니다.`);
+  const ending = R.set.filter(k => PROGRAMS[k].years !== Infinity && PROGRAMS[k].nature !== "cond");
+  // 조건부라서 실현 계산에서 뺀 큰 제도 알리기
+  const skippedCond = r.cand
+    .filter(k => PROGRAMS[k].nature === "cond" && !R.set.includes(k))
+    .sort((a, b) => PROGRAMS[b].value(p) - PROGRAMS[a].value(p))
+    .slice(0, 2);
+
+  const rows = r.cand.slice().sort((a, b) => PROGRAMS[a].domain.localeCompare(PROGRAMS[b].domain)).map(k => {
+    const inR = R.set.includes(k);
+    const d = inR ? R.ev.detail[k] : null;
+    const where = inR ? "채택" : "제외";
+    return `<tr><td>${PROGRAMS[k].name}<div class="it-meta">${PROGRAMS[k].org}</div></td>
+      <td>${DOMAIN_LABEL[PROGRAMS[k].domain]}</td><td>${NATURE_LABEL[PROGRAMS[k].nature]}</td>
+      <td class="r num">${fmt(PROGRAMS[k].value(p))}만원</td>
+      <td class="r num">${d ? fmt(d.real) + "만원" : "—"}</td>
+      <td class="r ${where === "제외" ? "drop" : ""}">${where}</td></tr>`;
+  }).join("");
+
+  const dropR = conflictNotes(R.set, r.cand);
+
+  $("#out").innerHTML = `
+    <div class="results">
+    <div class="branches">
+      ${branchHTML("real", "실현 금액이 가장 큰 조합", R)}
+    </div>
+
+    <div class="gap">
+      <h3>표기상 <b class="num">${fmt(R.ev.nominal)}만원</b> 중 실제로 손에 남는 건 <b class="num">${fmt(R.ev.realized)}만원</b>입니다</h3>
+      ${gapItems.length ? `<ul>${gapItems.map(x => `<li>${x}</li>`).join("")}</ul>` : `<p>이 조합은 표기 금액과 실현 금액이 거의 같습니다.</p>`}
+      ${ending.length ? `<p style="margin-top:8px">기간이 정해진 항목: ${ending.map(k => `${PROGRAMS[k].name}(${PROGRAMS[k].years}년)`).join(", ")}. 그래서 2년차 금액이 ${fmt(R.ev.realizedY2)}만원으로 내려갑니다.</p>` : ""}
+      ${skippedCond.length ? `<p style="margin-top:8px">추첨에 붙는다고 가정하면 ${skippedCond.map(k => `${PROGRAMS[k].name} 연 ${fmt(PROGRAMS[k].value(p))}만원`).join(", ")}이 더 큽니다. 다만 당첨을 전제할 수 없고 다른 제도를 여럿 밀어내기 때문에 실현 최대 조합에서는 뺐습니다. 당첨되면 그쪽이 유리하니 청약은 따로 넣어 두는 편이 좋습니다.</p>` : ""}
+    </div>
+
+    <details class="more"><summary>중복 때문에 빠진 제도</summary><div class="more-body">
+      ${dropR.length ? `<ul class="excl">${dropR.map(x => `<li>${x}</li>`).join("")}</ul>` : `<p class="it-meta">없습니다.</p>`}
+    </div></details>
+
+    <details class="more"><summary>자격이 확인된 제도 전체 (${r.cand.length}개)</summary><div class="more-body">
+      <table class="grid"><thead><tr><th>제도</th><th>분야</th><th>성격</th><th class="r">표기상</th><th class="r">실현</th><th class="r">채택</th></tr></thead>
+      <tbody>${rows}</tbody></table>
+    </div></details>
+
+    <details class="more"><summary>제도 사이의 관계</summary><div class="more-body">
+      <table class="grid"><thead><tr><th>관계</th><th>대상</th><th>설명</th></tr></thead><tbody>
+      ${EXCLUSIVE_GROUPS.map(g => `<tr><td>완전 배타</td><td>${g.ids.map(i => PROGRAMS[IDX[i]].name).join(" · ")}</td><td>${g.why}</td></tr>`).join("")}
+      <tr><td>완전 배타</td><td>공공임대 4종 ↔ 청년월세지원 · 기금 전세대출 · 보증료 지원</td><td>입주하면 나머지 대상에서 빠집니다.</td></tr>
+      ${REDUCTIONS.map(x => `<tr><td>감액</td><td>${x.from.map(i => PROGRAMS[IDX[i]].name).join(" · ")} → ${PROGRAMS[IDX[x.to]].name}</td><td>${x.label}</td></tr>`).join("")}
+      <tr><td>감액</td><td>중소기업 소득세 감면 → 월세 세액공제 → 청약저축 소득공제</td><td>같은 결정세액을 나눠 쓰므로 앞 항목이 세액을 줄이면 뒤 항목이 깎입니다.</td></tr>
+      <tr><td>감액</td><td>저축 여력을 함께 쓰는 제도</td><td>청약통장·도약계좌·내일저축계좌는 매달 납입이 필요해서 여력이 모자라면 비례해 줄어듭니다.</td></tr>
+      <tr><td>상태 충돌</td><td>구직 중 ↔ 절세 항목 전부</td><td>근로소득세를 내지 않는 기간에는 세액공제·감면이 0원입니다. 자격은 되지만 실현 금액은 없습니다.</td></tr>
+      </tbody></table>
+    </div></details>
+    </div>`;
+  window.scrollTo({ top: $("#out").offsetTop - 20, behavior: "smooth" });
+}
+
+/* ---------- 폼 ---------- */
+$("#usedBox").innerHTML = ONE_SHOTS.map(pr =>
+  `<label><input type="checkbox" value="${pr.id}"><span>${pr.name}</span></label>`).join("");
+function syncHouse() {
+  const t = +document.querySelector('input[name="tenure"]:checked').value;
+  const box = $("#fHouse"), dep = $("#depLbl"), rent = $("#rentLbl"), hint = $("#houseHint");
+  box.style.display = t === 2 ? "none" : "";
+  if (t === 3) { dep.textContent = "예상 주택가격 (만원)"; rent.textContent = "자기자금 (만원)"; hint.textContent = "주택가격 기준으로 대출 한도를 계산합니다."; }
+  else if (t === 1) { dep.textContent = "전세보증금 (만원)"; rent.textContent = "월세 (만원)"; hint.textContent = "전세는 월세를 0으로 두세요."; }
+  else { dep.textContent = "보증금 (만원)"; rent.textContent = "월세 (만원)"; hint.textContent = "보증부월세면 둘 다 넣으세요."; }
+}
+const syncAge = () => {
+  const r = currentBirth();
+  const valid = /^\d{8}$/.test($("#birth8").value.trim());
+  $("#ageHint").textContent = valid
+    ? `${r.year}년 ${r.month}월 ${r.day}일생 · 만 ${r.age}세 기준으로 판정합니다.`
+    : "8자리 숫자로 입력하세요 (예: 19970514).";
+};
+$("#birth8").addEventListener("input", () => {
+  const el = $("#birth8");
+  const digits = el.value.replace(/\D/g, "").slice(0, 8);
+  if (digits !== el.value) el.value = digits;
+});
+$("#birth8").addEventListener("input", syncAge);
+document.querySelectorAll('input[name="tenure"]').forEach(el => el.addEventListener("change", syncHouse));
+syncAge(); syncHouse();
+
+function syncLoan() {
+  const on = document.querySelector('input[name="loanon"]:checked').value === "1";
+  $("#fLoanAmt").style.display = on ? "" : "none";
+}
+document.querySelectorAll('input[name="loanon"]').forEach(el => el.addEventListener("change", syncLoan));
+syncLoan();
+$("#form").addEventListener("submit", e => { e.preventDefault(); if (READY) render(readForm()); });
+
+$("#pCount").textContent = `제도 ${N_PROG}개 대조`;
+buildAll(
+  () => {},
+  () => {
+    READY = true;
+    $("#go").disabled = false;
+    $("#go").textContent = "내 혜택 조회";
+  }
+);
+</script>
+</body>
+</html>
