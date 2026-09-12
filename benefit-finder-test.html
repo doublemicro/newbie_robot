@@ -47,6 +47,9 @@ label,.lbl{display:block;font-size:13.5px;color:var(--ink2);margin-bottom:6px;fo
 input[type=date],input[type=number],select{width:100%;padding:9px 10px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:12px;background:#FCFDFB;color:var(--ink)}
 input:focus,select:focus,button:focus-visible,.seg input:focus-visible+span,.chk input:focus-visible+span{outline:2px solid var(--focus);outline-offset:1px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.amount-input{display:flex;align-items:center;gap:8px}
+.amount-input input{min-width:0;flex:1}
+.amount-input span{flex-shrink:0;color:var(--ink2);font-size:15px}
 .seg,.chk{display:flex;flex-wrap:wrap;gap:5px}
 .seg label,.chk label{margin:0}
 .seg input,.chk input{position:absolute;opacity:0;width:0;height:0}
@@ -249,8 +252,11 @@ details.more[open]>summary{border-radius:23px 23px 0 0}
         <div class="hint">제외하면 이자 절감 항목이 후보에서 전부 빠지고, 빚 없이 받을 수 있는 혜택만 계산합니다.</div>
       </div>
       <div class="f" id="fLoanAmt">
-        <label for="loanAmount">희망 대출금액 (만원)</label>
-        <input type="number" id="loanAmount" value="" min="0" step="100" placeholder="비워두면 한도까지 전부">
+        <label for="loanAmount">희망 대출금액</label>
+        <div class="amount-input">
+          <input type="number" id="loanAmount" value="" min="0" step="1" placeholder="예: 100" aria-describedby="loanAmountUnit loanAmtHint">
+          <span id="loanAmountUnit">백만원</span>
+        </div>
         <div class="hint" id="loanAmtHint">상품별 한도와 보증금 조건 안에서 이 금액까지만 빌린다고 계산합니다. 비워두면 각 상품의 최대 한도를 씁니다.</div>
       </div>
 
@@ -1100,7 +1106,7 @@ function readForm() {
     rides: Math.max(0, +$("#rides").value || 0),
     used,
     loanOn,
-    loanAmount: loanOn ? Math.max(0, +$("#loanAmount").value || 0) : 0
+    loanAmount: loanOn ? Math.max(0, +$("#loanAmount").value || 0) * 100 : 0
   };
 }
 
