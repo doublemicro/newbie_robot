@@ -11,7 +11,7 @@
   --seal:#A6332E; --teal:#1E5B57; --gold:#856318; --gold-bg:#F7F1E0;
   --cash:#1E5B57; --tax:#2E5C86; --loan:#8A4A17; --cond:#6B5B8A;
   --focus:#2E6FB7;
-  --radius-sm:8px; --radius-md:12px; --radius-lg:16px; --radius-pill:999px;
+  --radius-sm:12px; --radius-md:18px; --radius-lg:24px; --radius-pill:999px;
   --sans:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
 }
 *{box-sizing:border-box}
@@ -36,7 +36,8 @@ h1 .yr{font-weight:400;color:var(--ink3)}
 main{max-width:1180px;margin:0 auto;padding:26px 24px 80px;display:grid;gap:26px}
 @media (min-width:1000px){main{grid-template-columns:365px minmax(0,1fr);align-items:start}.panel{position:sticky;top:22px;max-height:calc(100vh - 44px);overflow:auto}}
 
-.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-lg)}
+.panel h2{border-radius:calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px) 0 0}
 .panel h2{margin:0;padding:15px 20px;font-size:14px;font-weight:680;border-bottom:1px solid var(--line2);position:sticky;top:0;background:var(--card);z-index:1}
 .panel h2 span{float:right;font-weight:450;color:var(--ink3)}
 form{padding:6px 20px 20px}
@@ -45,7 +46,7 @@ form{padding:6px 20px 20px}
 .f{padding:11px 0;border-bottom:1px dotted var(--line2)}
 .f:last-of-type{border-bottom:0}
 label,.lbl{display:block;font-size:13.5px;color:var(--ink2);margin-bottom:6px;font-weight:550}
-input[type=date],input[type=number],select{width:100%;padding:9px 10px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#FCFDFB;color:var(--ink)}
+input[type=text],input[type=date],input[type=number],select{width:100%;padding:9px 10px;font:inherit;font-size:15px;border:1px solid var(--line);border-radius:var(--radius-sm);background:#FCFDFB;color:var(--ink)}
 input:focus,select:focus,button:focus-visible,.seg input:focus-visible+span,.chk input:focus-visible+span{outline:2px solid var(--focus);outline-offset:1px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .seg,.chk{display:flex;flex-wrap:wrap;gap:5px}
@@ -55,7 +56,7 @@ input:focus,select:focus,button:focus-visible,.seg input:focus-visible+span,.chk
 .seg input:checked+span{background:var(--ink);border-color:var(--ink);color:#fff}
 .chk input:checked+span{background:var(--gold-bg);border-color:#E0D4AE;color:var(--gold);font-weight:600}
 .hint{font-size:13px;color:var(--ink3);margin-top:5px}
-.submit{width:100%;margin-top:18px;padding:13px;font:inherit;font-size:16px;font-weight:650;background:var(--ink);color:#fff;border:0;border-radius:2px;cursor:pointer}
+.submit{width:100%;margin-top:18px;padding:13px;font:inherit;font-size:16px;font-weight:650;background:var(--ink);color:#fff;border:0;border-radius:var(--radius-pill);cursor:pointer}
 .submit:disabled{background:var(--ink3);cursor:progress}
 .submit:hover:not(:disabled){background:#0F1A1F}
 
